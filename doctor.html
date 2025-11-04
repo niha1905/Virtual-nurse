@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - Virtual Nurse AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/enhancements.css">
+    <link rel="stylesheet" href="css/medication_activity.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <i data-lucide="sun" class="theme-icon"></i>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass-panel">
+        <div class="nav-container">
+            <div class="logo">
+                <i data-lucide="heart-pulse" class="logo-icon"></i>
+                <span class="logo-text">Virtual Nurse AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><span class="nav-link active">Doctor Dashboard</span></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="header-info">
+                <h1 class="dashboard-title">Doctor Dashboard</h1>
+                <p class="dashboard-subtitle">Comprehensive patient monitoring and analysis</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat-badge glass-panel">
+                    <i data-lucide="users"></i>
+                    <span id="totalPatientsCount">12</span>
+                    <span class="stat-label">Total Patients</span>
+                </div>
+                <div class="stat-badge glass-panel">
+                    <i data-lucide="alert-triangle"></i>
+                    <span id="criticalPatientsCount">2</span>
+                    <span class="stat-label">Needs Attention</span>
+                </div>
+                <div class="stat-badge glass-panel">
+                    <i data-lucide="trending-up"></i>
+                    <span id="improvingPatientsCount">8</span>
+                    <span class="stat-label">Improving</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container glass-panel">
+            <button class="tab-btn active" data-tab="overview">
+                <i data-lucide="layout-dashboard"></i>
+                Overview
+            </button>
+            <button class="tab-btn" data-tab="patients">
+                <i data-lucide="users"></i>
+                All Patients
+            </button>
+            <button class="tab-btn" data-tab="analytics">
+                <i data-lucide="bar-chart"></i>
+                Analytics
+            </button>
+            <button class="tab-btn" data-tab="alerts">
+                <i data-lucide="bell"></i>
+                Alerts
+            </button>
+            <button class="tab-btn" data-tab="reports">
+                <i data-lucide="file-text"></i>
+                Reports
+            </button>
+            <button class="tab-btn" data-tab="communication">
+                <i data-lucide="message-circle"></i>
+                Communication
+            </button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div class="tab-content active" id="overviewTab">
+            <!-- Risk Overview -->
+            <div class="risk-overview">
+                <h2 class="section-title">
+                    <i data-lucide="alert-circle"></i>
+                    Patient Risk Overview
+                </h2>
+                <div class="risk-cards-grid">
+                    <div class="risk-card glass-panel risk-high fade-in-up">
+                        <div class="risk-icon">
+                            <i data-lucide="alert-triangle"></i>
+                        </div>
+                        <div class="risk-info">
+                            <h3 class="risk-count">2</h3>
+                            <p class="risk-label">High Risk</p>
+                        </div>
+                    </div>
+                    <div class="risk-card glass-panel risk-medium fade-in-up delay-1">
+                        <div class="risk-icon">
+                            <i data-lucide="alert-circle"></i>
+                        </div>
+                        <div class="risk-info">
+                            <h3 class="risk-count">4</h3>
+                            <p class="risk-label">Medium Risk</p>
+                        </div>
+                    </div>
+                    <div class="risk-card glass-panel risk-low fade-in-up delay-2">
+                        <div class="risk-icon">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <div class="risk-info">
+                            <h3 class="risk-count">6</h3>
+                            <p class="risk-label">Low Risk</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Critical Patients -->
+            <div class="critical-patients-section glass-panel fade-in-up">
+                <h2 class="section-title">
+                    <i data-lucide="users"></i>
+                    Patients Requiring Attention
+                </h2>
+                <div class="patients-table-wrapper">
+                    <table class="patients-table">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Risk Level</th>
+                                <th>Vitals Status</th>
+                                <th>Last Alert</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="criticalPatientsTable">
+                            <!-- Rows will be dynamically inserted -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Vitals Comparison Chart -->
+            <div class="chart-section glass-panel fade-in-up">
+                <h2 class="section-title">
+                    <i data-lucide="activity"></i>
+                    Average Vitals Comparison
+                </h2>
+                <div class="chart-wrapper">
+                    <canvas id="vitalsComparisonChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Patients Tab -->
+        <div class="tab-content" id="patientsTab">
+            <div class="patients-grid" id="allPatientsGrid">
+                <!-- Patient cards will be dynamically inserted -->
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-content" id="analyticsTab">
+            <div class="analytics-header glass-panel">
+                <h2 class="section-title">
+                    <i data-lucide="bar-chart"></i>
+                    Health Analytics & Patterns
+                </h2>
+                <div class="analytics-controls">
+                    <label for="analyticsPeriod" class="sr-only">Analytics period</label>
+                    <select id="analyticsPeriod" class="select-input" aria-label="Analytics period">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30" selected>Last 30 Days</option>
+                        <option value="60">Last 60 Days</option>
+                        <option value="90">Last 90 Days</option>
+                    </select>
+                    <button class="btn-secondary" id="refreshAnalytics">
+                        <i data-lucide="refresh-cw"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Patterns Container -->
+            <div id="patternsContainer" class="patterns-container"></div>
+            
+            <!-- Charts Container -->
+            <div id="chartsContainer" class="charts-container">
+                <div class="analytics-grid">
+                    <div class="analytics-card glass-panel fade-in-up">
+                        <h3 class="analytics-title">
+                            <i data-lucide="trending-up"></i>
+                            Health Trends
+                        </h3>
+                        <canvas id="healthTrendsChart"></canvas>
+                    </div>
+                    <div class="analytics-card glass-panel fade-in-up delay-1">
+                        <h3 class="analytics-title">
+                            <i data-lucide="pie-chart"></i>
+                            Risk Distribution
+                        </h3>
+                        <canvas id="riskDistributionChart"></canvas>
+                    </div>
+                    <div class="analytics-card glass-panel fade-in-up delay-2">
+                        <h3 class="analytics-title">
+                            <i data-lucide="bar-chart"></i>
+                            Alert Frequency
+                        </h3>
+                        <canvas id="alertFrequencyChart"></canvas>
+                    </div>
+                    <div class="analytics-card glass-panel fade-in-up delay-3">
+                        <h3 class="analytics-title">
+                            <i data-lucide="target"></i>
+                            Treatment Effectiveness
+                        </h3>
+                        <canvas id="treatmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts Tab -->
+        <div class="tab-content" id="alertsTab">
+            <div class="alerts-timeline" id="doctorAlertsTimeline">
+                <!-- Alert items will be dynamically inserted -->
+            </div>
+        </div>
+
+        <!-- Medical Reports Tab -->
+        <div class="tab-content" id="reportsTab">
+            <div class="reports-section glass-panel fade-in-up">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i data-lucide="file-text"></i>
+                        Medical Reports
+                    </h2>
+                    <button class="add-btn" id="addReportBtn">
+                        <i data-lucide="plus"></i>
+                        New Report
+                    </button>
+                </div>
+                <div class="reports-list" id="reportsList">
+                    <!-- Reports will be dynamically inserted -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Communication Tab -->
+        <div class="tab-content" id="communicationTab">
+            <div class="communication-section glass-panel fade-in-up">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i data-lucide="message-circle"></i>
+                        Patient Communication
+                    </h2>
+                </div>
+                <div class="communication-container">
+                    <div class="patient-selector">
+                        <label>Select Patient:</label>
+                        <label for="communicationPatientSelect" class="sr-only">Select patient for communication</label>
+                        <select id="communicationPatientSelect" class="select-input" aria-label="Select patient for communication">
+                            <option value="">Choose a patient...</option>
+                        </select>
+                    </div>
+                    <div class="message-input-area">
+                        <textarea id="communicationMessage" class="message-textarea" 
+                                  placeholder="Type your message or use voice dictation..."></textarea>
+                        <div class="message-actions">
+                            <button class="dictation-btn" id="dictationBtn">
+                                <i data-lucide="mic"></i>
+                                Start Dictation
+                            </button>
+                            <button class="send-btn" id="sendMessageBtn">
+                                <i data-lucide="send"></i>
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                    <div class="message-history" id="messageHistory">
+                        <!-- Messages will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Patient Modal -->
+    <div class="modal" id="addPatientModal">
+        <div class="modal-content glass-panel">
+            <button class="modal-close" id="closePatientModal" title="Close" aria-label="Close modal">
+                <i data-lucide="x"></i>
+            </button>
+            <h2 class="modal-title">Add New Patient</h2>
+            <form class="patient-form" id="addPatientForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="patientName" name="name" class="form-input" placeholder="e.g., John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="patientEmail" name="email" class="form-input" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" id="patientAge" name="age" class="form-input" placeholder="65" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="patientPhone" name="phone" class="form-input" placeholder="+1 234 567 8900">
+                </div>
+                <div class="form-group">
+                    <label>Medical Condition</label>
+                    <input type="text" id="patientCondition" name="condition" class="form-input" placeholder="e.g., Hypertension, Diabetes">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="patientAddress" name="address" class="form-input" rows="2" placeholder="Patient address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Emergency Contact</label>
+                    <input type="text" id="emergencyContact" name="emergency_contact" class="form-input" placeholder="Name and phone number">
+                </div>
+                <button type="submit" class="submit-btn pulse-glow">
+                    <i data-lucide="check"></i>
+                    Add Patient
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Patient Detail Modal -->
+    <div class="modal" id="patientDetailModal">
+        <div class="modal-content glass-panel large-modal">
+            <button class="modal-close" id="closePatientDetailModal" title="Close" aria-label="Close modal">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="patient-detail-content" id="patientDetailContent">
+                <!-- Patient details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/gemini_api.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/alerts.js"></script>
+    
+    <!-- Analytics Module (must load after config.js) -->
+    <script src="js/analytics_manager.js"></script>
+    <script src="js/medical_reports_manager.js"></script>
+    <script src="js/doctor_dashboard.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/patient_management.js"></script>
+    
+    <script>
+        (function ensureLucide(){
+            if (!window.lucide) {
+                var s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js';
+                s.defer = true;
+                s.onload = function(){ if (window.lucide && typeof window.lucide.createIcons==='function') window.lucide.createIcons(); };
+                document.head.appendChild(s);
+            }
+        })();
+        if (window.lucide && typeof window.lucide.createIcons==='function') { window.lucide.createIcons(); }
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('.theme-icon');
+            icon.setAttribute('data-lucide', document.body.classList.contains('dark-mode') ? 'moon' : 'sun');
+            if (window.lucide && typeof window.lucide.createIcons==='function') { window.lucide.createIcons(); }
+        });
+
+        // Tab Navigation
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.getAttribute('data-tab');
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(`${targetTab}Tab`).classList.add('active');
+
+                // Trigger loaders when tabs are activated
+                if (targetTab === 'overview') {
+                    if (window.doctorDashboard) { window.doctorDashboard.updateDashboard(); }
+                } else if (targetTab === 'patients') {
+                    if (window.doctorDashboard) { window.doctorDashboard.updatePatientGrid(); }
+                } else if (targetTab === 'analytics') {
+                    if (window.analyticsManager) { window.analyticsManager.loadAnalytics(); }
+                } else if (targetTab === 'alerts') {
+                    if (window.doctorDashboard) { window.doctorDashboard.loadDoctorAlerts(); }
+                } else if (targetTab === 'reports') {
+                    if (window.medicalReports) { window.medicalReports.loadReports && window.medicalReports.loadReports(); }
+                } else if (targetTab === 'communication') {
+                    if (window.doctorDashboard) { window.doctorDashboard.populateCommunicationPatients(); }
+                }
+            });
+        });
+    </script>
+    
+    <!-- Enhancement Scripts -->
+    <script src="js/enhancements.js"></script>
+    <!-- Footer -->
+    <footer class="home-footer">
+        <div class="site-footer">
+            <div class="brand">
+                <strong>Virtual Nurse AI</strong>
+                <div class="small-note">Clinical insights at your fingertips</div>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="patient.html">Patients</a>
+                <a href="reports.html">Reports</a>
+                <a href="#">Documentation</a>
+            </div>
+            <div class="small-note">© <span id="year">2025</span> Virtual Nurse AI</div>
+        </div>
+    </footer>
+    <script>
+        (function(){ const y = new Date().getFullYear(); const el = document.getElementById('year'); if (el) el.textContent = y; })();
+    </script>
+</body>
+</html>

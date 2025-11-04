@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard - Virtual Nurse AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/enhancements.css">
+    <link rel="stylesheet" href="css/emergency_button.css">
+    <link rel="stylesheet" href="css/medication_activity.css">
+    <link rel="stylesheet" href="css/detection.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <script>
+        (function(){
+            try{
+                var raw = localStorage.getItem('user_session');
+                var sess = raw ? JSON.parse(raw) : null;
+                if (!sess || (sess.role && sess.role !== 'patient')) {
+                    window.location.href = 'login.html';
+                }
+            }catch(e){}
+        })();
+    </script>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <i data-lucide="sun" class="theme-icon"></i>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass-panel">
+        <div class="nav-container">
+            <div class="logo">
+                <i data-lucide="heart-pulse" class="logo-icon"></i>
+                <span class="logo-text">Virtual Nurse AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><span class="nav-link active">Patient Dashboard</span></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="header-info">
+                <h1 class="dashboard-title">Patient Dashboard</h1>
+                <p class="dashboard-subtitle">Real-time health monitoring and assistance</p>
+            </div>
+            <div class="header-actions">
+                <button class="voice-assist-btn pulse-glow" id="patientVoiceBtn">
+                    <i data-lucide="mic"></i>
+                    Voice Assistant
+                </button>
+                <button class="emergency-button-large" id="emergencyButton">
+                    <i data-lucide="alert-triangle"></i>
+                    Emergency
+                </button>
+            </div>
+        </div>
+
+        <!-- Wake Word Status -->
+    <div class="wake-word-status glass-panel hidden" id="wakeWordStatus">
+            <i data-lucide="mic-off" class="status-icon"></i> Not listening
+        </div>
+
+        <!-- Vitals Grid -->
+        <div class="vitals-grid">
+            <!-- Heart Rate -->
+            <div class="vital-card glass-panel fade-in-up">
+                <div class="vital-header">
+                    <i data-lucide="heart-pulse" class="vital-icon heart-icon"></i>
+                    <h3 class="vital-title">Heart Rate</h3>
+                </div>
+                <div class="vital-value" id="heartRate">
+                    <span class="value">--</span>
+                    <span class="unit">BPM</span>
+                </div>
+                <div class="vital-status status-normal">Normal</div>
+                <div class="vital-chart">
+                    <canvas id="heartRateChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Temperature -->
+            <div class="vital-card glass-panel fade-in-up delay-1">
+                <div class="vital-header">
+                    <i data-lucide="thermometer" class="vital-icon temp-icon"></i>
+                    <h3 class="vital-title">Temperature</h3>
+                </div>
+                <div class="vital-value" id="temperature">
+                    <span class="value">--</span>
+                    <span class="unit">°F</span>
+                </div>
+                <div class="vital-status status-normal">Normal</div>
+                <div class="vital-chart">
+                    <canvas id="tempChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Oxygen Level -->
+            <div class="vital-card glass-panel fade-in-up delay-2">
+                <div class="vital-header">
+                    <i data-lucide="wind" class="vital-icon oxygen-icon"></i>
+                    <h3 class="vital-title">Oxygen Level</h3>
+                </div>
+                <div class="vital-value" id="oxygenLevel">
+                    <span class="value">--</span>
+                    <span class="unit">%</span>
+                </div>
+                <div class="vital-status status-normal">Normal</div>
+                <div class="vital-chart">
+                    <canvas id="oxygenChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Blood Pressure -->
+            <div class="vital-card glass-panel fade-in-up delay-3">
+                <div class="vital-header">
+                    <i data-lucide="activity" class="vital-icon bp-icon"></i>
+                    <h3 class="vital-title">Blood Pressure</h3>
+                </div>
+                <div class="vital-value" id="bloodPressure">
+                    <span class="value">--/--</span>
+                    <span class="unit">mmHg</span>
+                </div>
+                <div class="vital-status status-normal">Normal</div>
+                <div class="vital-chart">
+                    <canvas id="bpChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detection Systems -->
+        <div class="detection-grid">
+            <!-- Cough Detection -->
+            <div class="detection-card glass-panel fade-in-up">
+                <div class="detection-header">
+                    <i data-lucide="waves" class="detection-icon"></i>
+                    <h3 class="detection-title">Cough Detection</h3>
+                </div>
+                <div class="detection-status" id="coughStatus">
+                    <div class="pulse-indicator"></div>
+                    <span class="detection-text">Monitoring...</span>
+                </div>
+                <div class="detection-stats">
+                    <div class="stat">
+                        <span class="stat-label">Today:</span>
+                        <span class="stat-value" id="coughCount">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Last Event:</span>
+                        <span class="stat-value" id="lastCough">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fall Detection -->
+            <div class="detection-card glass-panel fade-in-up delay-1">
+                <div class="detection-header">
+                    <i data-lucide="shield-alert" class="detection-icon"></i>
+                    <h3 class="detection-title">Fall Detection</h3>
+                </div>
+                <div class="detection-status status-safe" id="fallStatus">
+                    <div class="status-indicator"></div>
+                    <span class="detection-text">Safe</span>
+                </div>
+                <div class="detection-stats">
+                    <div class="stat">
+                        <span class="stat-label">Status:</span>
+                        <span class="stat-value">Active</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Last Check:</span>
+                        <span class="stat-value" id="lastFallCheck">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mood Detection -->
+            <div class="detection-card glass-panel fade-in-up delay-2">
+                <div class="detection-header">
+                    <i data-lucide="smile" class="detection-icon"></i>
+                    <h3 class="detection-title">Mood Detection</h3>
+                </div>
+                <div class="mood-display" id="moodDisplay">
+                    <div class="mood-emoji">😊</div>
+                    <div class="mood-label">Positive</div>
+                </div>
+                <div class="mood-waveform">
+                    <canvas id="moodWaveform"></canvas>
+                </div>
+            </div>
+
+            <!-- Fall Detection -->
+            <div class="detection-card glass-panel fade-in-up delay-3">
+                <div class="detection-header">
+                    <i data-lucide="alert-triangle" class="detection-icon"></i>
+                    <h3 class="detection-title">Fall Detection</h3>
+                </div>
+                <div class="fall-status-section">
+                    <div class="fall-status monitoring" id="fallStatus">
+                        <i data-lucide="square" class="status-icon"></i>
+                        <span class="status-text">Not Monitoring</span>
+                    </div>
+                    <div class="fall-info">
+                        <div class="fall-info-item">
+                            <label>Last Check:</label>
+                            <span id="lastFallCheck">Never</span>
+                        </div>
+                        <div class="fall-info-item">
+                            <label>Confidence:</label>
+                            <span id="fallConfidence">--</span>
+                        </div>
+                    </div>
+                    <div class="fall-controls">
+                        <button class="btn-primary" id="startFallMonitoring" title="Start continuous monitoring">
+                            <i data-lucide="play"></i> Start Monitoring
+                        </button>
+                        <button class="btn-secondary hidden" id="stopFallMonitoring" title="Stop monitoring">
+                            <i data-lucide="square"></i> Stop
+                        </button>
+                        <button class="btn-secondary" id="testFallDetection" title="Run a quick test">
+                            <i data-lucide="test-tube"></i> Test
+                        </button>
+                    </div>
+                    <div id="fallMonitoringStatus" class="monitoring-status" title="Current monitoring state">
+                        <i data-lucide="shield" class="status-icon"></i> Not Active
+                    </div>
+                    <div id="sensorDisplay" class="sensor-display"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Medication Section -->
+        <div class="medication-section glass-panel fade-in-up">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i data-lucide="pill"></i>
+                    Upcoming Medication
+                </h2>
+                <button class="view-all-btn" id="viewAllMedications">
+                    <i data-lucide="calendar"></i>
+                    View Schedule
+                </button>
+            </div>
+            <div class="next-medication-card" id="nextMedicationCard">
+                <div class="medication-loading">
+                    <i data-lucide="loader-2" class="animate-spin"></i>
+                    <span>Loading medication schedule...</span>
+                </div>
+            </div>
+            <div class="medication-actions hidden" id="medicationActions">
+                <button class="btn-primary" id="medicationTakenBtn">
+                    <i data-lucide="check"></i>
+                    Taken
+                </button>
+                <button class="btn-secondary" id="medicationRemindLaterBtn">
+                    <i data-lucide="clock"></i>
+                    Remind Later
+                </button>
+            </div>
+        </div>
+
+        <!-- Steps & Sleep Section (Google Health) -->
+        <div class="activity-section glass-panel fade-in-up">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i data-lucide="activity"></i>
+                    Activity & Sleep
+                </h2>
+                <div class="summary-toggle">
+                    <button class="toggle-btn active" data-period="week">Week</button>
+                    <button class="toggle-btn" data-period="month">Month</button>
+                </div>
+            </div>
+            <div class="activity-grid">
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i data-lucide="footprints"></i>
+                    </div>
+                    <div class="activity-info">
+                        <h3 class="activity-label">Steps Today</h3>
+                        <div class="activity-value" id="stepsCount">--</div>
+                        <div class="activity-trend" id="stepsTrend">
+                            <i data-lucide="trending-up"></i>
+                            <span>--</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i data-lucide="moon"></i>
+                    </div>
+                    <div class="activity-info">
+                        <h3 class="activity-label">Sleep Last Night</h3>
+                        <div class="activity-value" id="sleepHours">--</div>
+                        <div class="activity-trend" id="sleepTrend">
+                            <i data-lucide="trending-up"></i>
+                            <span>--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="activity-chart">
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Health Trends -->
+        <div class="trends-section glass-panel fade-in-up">
+            <div class="trends-header">
+                <h3 class="trends-title">
+                    <i data-lucide="trending-up"></i>
+                    Health Trends (Last 7 Days)
+                </h3>
+                <div class="trends-filters">
+                    <button class="filter-btn active" data-period="day">Day</button>
+                    <button class="filter-btn" data-period="week">Week</button>
+                    <button class="filter-btn" data-period="month">Month</button>
+                </div>
+            </div>
+            <div class="trends-chart">
+                <canvas id="healthTrendsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Daily Summary & Google Fit -->
+        <div class="grid-container">
+            <!-- Daily Summary Section -->
+            <div class="summary-section glass-panel fade-in-up">
+                <div class="summary-header">
+                    <h3 class="summary-title">
+                        <i data-lucide="file-text"></i>
+                        Daily Health Summary
+                    </h3>
+                    <div class="summary-actions">
+                        <button class="btn-primary" id="getMorningSummary">
+                            <i data-lucide="sunrise"></i> Morning
+                        </button>
+                        <button class="btn-primary" id="getEveningSummary">
+                            <i data-lucide="moon"></i> Evening
+                        </button>
+                        <label class="toggle-switch summary-auto-toggle">
+                            <input type="checkbox" id="autoSummaryToggle">
+                            <span>Auto-summary</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="small-note">Auto-summary will be spoken at 8:00 AM and 8:00 PM</div>
+                <div id="summarySuggestion"></div>
+            </div>
+
+            <!-- Google Health Sync Section -->
+            <div class="health-sync-section glass-panel fade-in-up">
+                <div class="sync-header">
+                    <h3 class="sync-title">
+                        <i data-lucide="activity"></i>
+                        Google Fit Integration
+                    </h3>
+                    <div id="googleFitAuthStatus" class="auth-status">
+                        <i data-lucide="check-circle" class="status-icon success"></i> Connected
+                    </div>
+                </div>
+                <div class="sync-actions">
+                    <button class="btn-secondary" id="authenticateGoogleFit">
+                        <i data-lucide="link"></i> Authenticated
+                    </button>
+                    <button class="btn-secondary" id="syncToGoogleFit">
+                        <i data-lucide="refresh-cw"></i> Sync Vitals
+                    </button>
+                    <label class="toggle-switch" title="Automatically syncs hourly when connected">
+                        <input type="checkbox" id="enableAutoSync" checked>
+                        <span id="autoSyncLabel">Auto-sync vitals</span>
+                    </label>
+                </div>
+                <div class="small-note" id="googleFitHelper">Syncs hourly when connected</div>
+                <div id="googleFitLastSync" class="last-sync small-note">Last sync: Never</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Modal (same as index) -->
+    <div class="modal" id="voiceModal">
+        <div class="modal-content glass-panel">
+            <button class="modal-close" id="closeModal" aria-label="Close voice modal" title="Close">
+                <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+            <div class="voice-panel">
+                <h2 class="voice-title">Voice Assistant Active</h2>
+                <p class="voice-help-text">
+                    🎤 Click the microphone and speak clearly
+                </p>
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text" id="statusText">Ready</span>
+                </div>
+                <div class="mic-container">
+                    <button class="mic-button" id="micButton" aria-label="Start voice recording" title="Click to speak">
+                        <div class="mic-ring" aria-hidden="true"></div>
+                        <i data-lucide="mic" class="mic-icon" aria-hidden="true"></i>
+                    </button>
+                    <p class="mic-label">Click to start</p>
+                </div>
+                <canvas id="waveform" class="waveform"></canvas>
+                <div class="transcription-container">
+                    <div class="transcription-label">You said:</div>
+                    <div class="transcription-text" id="transcriptionText">
+                        Click the microphone to start speaking...
+                    </div>
+                </div>
+                <div class="response-container">
+                    <div class="response-label">
+                        <i data-lucide="bot"></i>
+                        Virtual Nurse Response:
+                    </div>
+                    <div class="response-text" id="responseText">
+                        Waiting for your input...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script>
+        // Prevent ReferenceError in case lucide failed to load from CDN.
+        if (typeof window.lucide === 'undefined') {
+            window.lucide = {
+                createIcons: function(){ /* no-op until real library loads */ }
+            };
+        }
+    </script>
+    <script src="js/config.js"></script>
+    <script src="js/gemini_api.js"></script>
+    <script src="js/wake_word.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/alerts.js"></script>
+    
+    <!-- New Feature Scripts -->
+    <script src="js/summaries.js"></script>
+    <script src="js/health_sync.js"></script>
+    <script src="js/fall_detection.js"></script>
+    <script src="js/medication_reminders.js"></script>
+    <script src="js/activity_tracker.js"></script>
+    <script src="js/cough_detection.js"></script>
+    
+    <!-- Enhancement Scripts -->
+    <script src="js/enhancements.js"></script>
+    <script src="js/emergency_handler.js"></script>
+    
+    <script>
+        // Ensure lucide is available; if not, dynamically load it and initialize icons.
+        (function(){
+            function loadLucide() {
+                if (typeof window.lucide !== 'undefined') return Promise.resolve(window.lucide);
+                return new Promise(function(resolve, reject){
+                    var s = document.createElement('script');
+                    s.src = 'https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js';
+                    s.async = true;
+                    s.onload = function(){
+                        if (typeof window.lucide !== 'undefined') resolve(window.lucide);
+                        else reject(new Error('lucide did not register'));
+                    };
+                    s.onerror = function(e){ reject(e || new Error('Failed to load lucide')) };
+                    document.head.appendChild(s);
+                });
+            }
+
+            // Initialize lucide and safe wrappers for icon updates
+            loadLucide().then(function(lucide){
+                try{ lucide.createIcons(); }catch(e){ console.warn('lucide.createIcons failed', e); }
+            }).catch(function(err){
+                console.warn('lucide not available:', err);
+            });
+
+            // Theme Toggle (guard lucide usage)
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const icon = themeToggle.querySelector('.theme-icon');
+                    if (icon) {
+                        icon.setAttribute('data-lucide', document.body.classList.contains('dark-mode') ? 'moon' : 'sun');
+                        if (typeof window.lucide !== 'undefined') {
+                            try{ window.lucide.createIcons(); }catch(e){}
+                        }
+                    }
+                });
+            }
+
+            // Initialize Dashboard after DOM ready
+            document.addEventListener('DOMContentLoaded', () => {
+                // Safe call in case some feature scripts expect lucide to exist synchronously
+                if (typeof window.lucide === 'undefined') {
+                    // attempt to load synchronously (already started above), then init dashboard
+                    loadLucide().finally(()=>{
+                        try{ initializePatientDashboard(); }catch(e){ console.warn('init failed', e); }
+                    });
+                } else {
+                    try{ initializePatientDashboard(); }catch(e){ console.warn('init failed', e); }
+                }
+            });
+        })();
+    </script>
+
+    <!-- Footer -->
+    <footer class="home-footer">
+        <div class="site-footer">
+            <div class="brand">
+                <strong>Virtual Nurse AI</strong>
+                <div class="small-note">Connected care for everyday life</div>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="doctor.html">Doctor</a>
+                <a href="caretaker.html">Caretaker</a>
+                <a href="#">Help</a>
+            </div>
+            <div class="small-note">© <span id="year">2025</span> Virtual Nurse AI</div>
+        </div>
+    </footer>
+    <script>
+        (function(){ const y = new Date().getFullYear(); const el = document.getElementById('year'); if (el) el.textContent = y; })();
+    </script>
+</body>
+</html>

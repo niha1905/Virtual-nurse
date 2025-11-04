@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "patientId": "1",
+    "medicine": "Aspirin",
+    "dosage": "100mg",
+    "time": "08:00",
+    "frequency": "daily",
+    "active": true
+  },
+  {
+    "id": 2,
+    "patientId": "1",
+    "medicine": "dolo",
+    "dosage": "1",
+    "time": "18:46",
+    "frequency": "Once daily",
+    "active": true,
+    "lastTaken": "2025-11-04T20:39:39.640485",
+    "taken": true,
+    "status": "completed"
+  },
+  {
+    "id": 1,
+    "patientId": "1",
+    "medicine": "Aspirin",
+    "dosage": "100mg",
+    "time": "08:00",
+    "frequency": "daily",
+    "active": true
+  },
+  {
+    "id": 4,
+    "patientId": "1",
+    "medicine": "dolo",
+    "dosage": "1",
+    "time": "19:00",
+    "frequency": "Once daily",
+    "active": true,
+    "lastTaken": "2025-11-04T19:37:19.576254",
+    "taken": true,
+    "status": "completed"
+  },
+  {
+    "id": 1,
+    "patientId": "1",
+    "medicine": "Aspirin",
+    "dosage": "100mg",
+    "time": "08:00",
+    "frequency": "daily",
+    "active": true
+  },
+  {
+    "id": 6,
+    "patientId": "1",
+    "medicine": "dolo",
+    "dosage": "1",
+    "time": "19:15",
+    "frequency": "Once daily",
+    "active": true,
+    "lastTaken": "2025-11-04T19:37:21.299550",
+    "taken": true,
+    "status": "completed"
+  },
+  {
+    "id": 1,
+    "patientId": "1",
+    "medicine": "Aspirin",
+    "dosage": "100mg",
+    "time": "08:00",
+    "frequency": "daily",
+    "active": true
+  },
+  {
+    "id": 1,
+    "patientId": "1",
+    "medicine": "Aspirin",
+    "dosage": "100mg",
+    "time": "08:00",
+    "frequency": "daily",
+    "active": true
+  }
+]

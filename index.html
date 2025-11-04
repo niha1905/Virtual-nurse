@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Nurse AI - Intelligent Healthcare Assistant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/enhancements.css">
+    <link rel="stylesheet" href="css/role_selection.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <i data-lucide="sun" class="theme-icon"></i>
+    </div>
+
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+        <label for="languageSelect" class="sr-only">Select Language</label>
+        <select id="languageSelect" class="language-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+            <option value="ta">தமிழ்</option>
+        </select>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass-panel">
+        <div class="nav-container">
+            <div class="logo">
+                <i data-lucide="heart-pulse" class="logo-icon"></i>
+                <span class="logo-text">Virtual Nurse AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="patient.html" class="nav-link">Patient</a></li>
+                <li><a href="caretaker.html" class="nav-link">Caretaker</a></li>
+                <li><a href="doctor.html" class="nav-link">Doctor</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title fade-in-up">
+                    Virtual Nurse AI
+                    <span class="gradient-text">Your Personal AI Nurse — Always Listening, Always Caring.</span>
+                </h1>
+                <p class="hero-subtitle fade-in-up delay-1">
+                    Experience next-generation voice-driven healthcare monitoring with AI-powered support, 
+                    real-time vitals tracking, and emergency assistance at your command.
+                </p>
+                <div class="hero-actions fade-in-up delay-2">
+                    <button id="getStartedBtn" class="cta-button pulse-glow">
+                        <i data-lucide="stethoscope" class="button-icon"></i>
+                        Get Started
+                    </button>
+                    <a href="login.html" class="cta-button-secondary">
+                        <i data-lucide="log-in" class="button-icon"></i>
+                        Sign In
+                    </a>
+                    <a href="signup.html" class="cta-button-secondary">
+                        <i data-lucide="user-plus" class="button-icon"></i>
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+
+            <!-- AI Assistant Avatar -->
+            <div class="hero-avatar fade-in-up delay-3">
+                <div class="avatar-ring ring-1"></div>
+                <div class="avatar-ring ring-2"></div>
+                <div class="avatar-ring ring-3"></div>
+                <div class="avatar-core">
+                    <i data-lucide="heart-pulse" class="avatar-icon"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Role Selection Section -->
+    <section class="role-selection-section hidden" id="roleSelectionSection">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Choose your role to continue</h2>
+            <div class="role-cards-grid">
+                <!-- Patient Card -->
+                <div class="role-card glass-panel fade-in-up" data-role="patient">
+                    <div class="role-icon-wrapper">
+                        <i data-lucide="user" class="role-icon"></i>
+                    </div>
+                    <h3 class="role-title">🧍‍♂️ Patient</h3>
+                    <p class="role-description">
+                        Track your health, get medication reminders, and talk to your nurse.
+                    </p>
+                    <button class="role-select-btn" data-role="patient">
+                        Continue as Patient
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Caregiver Card -->
+                <div class="role-card glass-panel fade-in-up delay-1" data-role="caretaker">
+                    <div class="role-icon-wrapper">
+                        <i data-lucide="users" class="role-icon"></i>
+                    </div>
+                    <h3 class="role-title">👨‍👩‍🦱 Caregiver</h3>
+                    <p class="role-description">
+                        Manage reminders and respond to emergencies.
+                    </p>
+                    <button class="role-select-btn" data-role="caretaker">
+                        Continue as Caregiver
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Doctor Card -->
+                <div class="role-card glass-panel fade-in-up delay-2" data-role="doctor">
+                    <div class="role-icon-wrapper">
+                        <i data-lucide="stethoscope" class="role-icon"></i>
+                    </div>
+                    <h3 class="role-title">👩‍⚕️ Doctor</h3>
+                    <p class="role-description">
+                        Monitor patients and review reports.
+                    </p>
+                    <button class="role-select-btn" data-role="doctor">
+                        Continue as Doctor
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section class="login-section hidden" id="loginSection">
+        <div class="container">
+            <div class="login-card glass-panel fade-in-up">
+                <button class="back-btn" id="backToRoles">
+                    <i data-lucide="arrow-left"></i> Choose Role
+                </button>
+                <h2 class="login-title">Login</h2>
+                <p class="login-subtitle" id="loginRoleText">Sign in to continue</p>
+                <div class="role-quick-select">
+                    <button class="role-btn-mini" data-role="patient" onclick="window.roleSelection?.selectRole('patient')">
+                        <i data-lucide="user"></i> Patient
+                    </button>
+                    <button class="role-btn-mini" data-role="caretaker" onclick="window.roleSelection?.selectRole('caretaker')">
+                        <i data-lucide="users"></i> Caregiver
+                    </button>
+                    <button class="role-btn-mini" data-role="doctor" onclick="window.roleSelection?.selectRole('doctor')">
+                        <i data-lucide="stethoscope"></i> Doctor
+                    </button>
+                </div>
+                
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="login-submit-btn">
+                        <i data-lucide="log-in"></i>
+                        Sign In
+                    </button>
+
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+
+                    <button type="button" class="google-signin-btn" id="googleSignIn">
+                        <i data-lucide="chrome"></i>
+                        Sign in with Google
+                    </button>
+                    <p class="google-signin-note">For health data sync via Google Health APIs</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title gradient-text">Intelligent Features</h2>
+            <div class="features-grid">
+                <!-- Voice Control -->
+                <div class="feature-card glass-panel-enhanced card-shimmer fade-in-up">
+                    <div class="feature-icon-wrapper">
+                        <i data-lucide="mic-2" class="feature-icon"></i>
+                    </div>
+                    <h3 class="feature-title">Voice Control</h3>
+                    <p class="feature-description">
+                        Natural language processing powered by advanced AI to understand and respond to your healthcare needs.
+                    </p>
+                </div>
+
+                <!-- Health Monitoring -->
+                <div class="feature-card glass-panel-enhanced card-shimmer fade-in-up delay-1">
+                    <div class="feature-icon-wrapper">
+                        <i data-lucide="activity" class="feature-icon"></i>
+                    </div>
+                    <h3 class="feature-title">Health Monitoring</h3>
+                    <p class="feature-description">
+                        Real-time tracking of vital signs including heart rate, temperature, oxygen levels, and more.
+                    </p>
+                </div>
+
+                <!-- Emergency Support -->
+                <div class="feature-card glass-panel-enhanced card-shimmer fade-in-up delay-2">
+                    <div class="feature-icon-wrapper">
+                        <i data-lucide="alert-circle" class="feature-icon"></i>
+                    </div>
+                    <h3 class="feature-title">Emergency Support</h3>
+                    <p class="feature-description">
+                        Instant emergency detection and alert system with automated notification to caretakers and doctors.
+                    </p>
+                </div>
+
+                <!-- Smart Reminders -->
+                <div class="feature-card glass-panel-enhanced card-shimmer fade-in-up delay-3">
+                    <div class="feature-icon-wrapper">
+                        <i data-lucide="bell" class="feature-icon"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Reminders</h3>
+                    <p class="feature-description">
+                        AI-powered medication reminders and health checkup notifications tailored to your schedule.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Voice Interaction Modal -->
+    <div class="modal" id="voiceModal">
+        <div class="modal-content glass-panel">
+            <button class="modal-close" id="closeModal" aria-label="Close voice modal" title="Close">
+                <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+
+            <div class="voice-panel">
+                <h2 class="voice-title">Voice Assistant Active</h2>
+                
+                <!-- Help Text -->
+                <p class="voice-help-text">
+                    🎤 Click the microphone and speak. Try: "Hello", "I have a headache", "Check my vitals"
+                </p>
+                
+                <!-- Status Indicator -->
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text" id="statusText">Ready</span>
+                </div>
+
+                <!-- Microphone Button -->
+                <div class="mic-container">
+                    <button class="mic-button" id="micButton" aria-label="Start voice recording" title="Click to speak">
+                        <div class="mic-ring" aria-hidden="true"></div>
+                        <i data-lucide="mic" class="mic-icon" aria-hidden="true"></i>
+                    </button>
+                    <p class="mic-label">Click to start</p>
+                </div>
+
+                <!-- Waveform Visualizer -->
+                <canvas id="waveform" class="waveform"></canvas>
+
+                <!-- Transcription Display -->
+                <div class="transcription-container">
+                    <div class="transcription-label">You said:</div>
+                    <div class="transcription-text" id="transcriptionText">
+                        Click the microphone to start speaking...
+                    </div>
+                </div>
+
+                <!-- AI Response -->
+                <div class="response-container">
+                    <div class="response-label">
+                        <i data-lucide="bot"></i>
+                        Virtual Nurse Response:
+                    </div>
+                    <div class="response-text" id="responseText">
+                        Waiting for your input...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Alert Modal -->
+    <div class="modal emergency-modal" id="emergencyModal">
+        <div class="modal-content glass-panel emergency-content">
+            <div class="emergency-header">
+                <i data-lucide="alert-triangle" class="emergency-icon"></i>
+                <h2 class="emergency-title">EMERGENCY ALERT</h2>
+            </div>
+
+            <div class="emergency-body">
+                <p class="emergency-message">Patient needs immediate assistance!</p>
+                <div class="countdown-timer" id="countdownTimer">30</div>
+                <p class="countdown-label">Seconds until escalation</p>
+            </div>
+
+            <div class="emergency-actions">
+                <button class="emergency-btn acknowledge-btn" id="acknowledgeBtn">
+                    <i data-lucide="check-circle"></i>
+                    Acknowledge
+                </button>
+                <button class="emergency-btn escalate-btn" id="escalateBtn">
+                    <i data-lucide="phone-call"></i>
+                    Escalate Now
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="js/config.js"></script>
+
+    <!-- Footer -->
+    <footer class="home-footer">
+        <div class="site-footer">
+            <div class="brand">
+                <strong>Virtual Nurse AI</strong>
+                <div class="small-note">Always listening, always caring</div>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="login.html">Login</a>
+                <a href="signup.html">Sign up</a>
+                <a href="#">Support</a>
+            </div>
+            <div class="small-note">© <span id="year">2025</span> Virtual Nurse AI</div>
+        </div>
+    </footer>
+
+    <script>
+        // Set dynamic year in footer
+        (function(){
+            const y = new Date().getFullYear();
+            const el = document.getElementById('year');
+            if (el) el.textContent = y;
+        })();
+    </script>
+
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="js/config.js"></script>
+    <script src="js/gemini_api.js"></script>
+    <script src="js/wake_word.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/alerts.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/role_selection.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Theme toggle handled by theme.js
+
+        // Language Toggle
+        const languageSelect = document.getElementById('languageSelect');
+        languageSelect.addEventListener('change', (e) => {
+            // Placeholder for language change
+            console.log('Language changed to:', e.target.value);
+        });
+    </script>
+    
+    <!-- Enhancement Scripts -->
+    <script src="js/enhancements.js"></script>
+</body>
+</html>

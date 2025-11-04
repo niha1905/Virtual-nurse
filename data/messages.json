@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "from_id": "D1",
+    "to_id": "1",
+    "content": "How are you feeling today? Any improvement in the symptoms?",
+    "timestamp": "2025-11-04T09:30:00Z",
+    "read": true
+  },
+  {
+    "id": "2",
+    "from_id": "1",
+    "to_id": "D1",
+    "content": "Much better, thank you! The fever has gone down.",
+    "timestamp": "2025-11-04T10:15:00Z",
+    "read": true
+  }
+]

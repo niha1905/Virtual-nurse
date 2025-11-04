@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "patient_id": "1",
+    "doctor_id": "D1",
+    "doctor_name": "Dr. Smith",
+    "report_type": "consultation",
+    "content": "Patient presented with mild fever and cough. Prescribed rest and fluids. Follow up in 3 days if symptoms persist.",
+    "created_at": "2025-11-03T14:30:00Z"
+  },
+  {
+    "id": "2",
+    "patient_id": "2",
+    "doctor_id": "D1",
+    "doctor_name": "Dr. Smith",
+    "report_type": "diagnosis",
+    "content": "Blood pressure slightly elevated. Recommended lifestyle changes and scheduled follow-up in 2 weeks.",
+    "created_at": "2025-11-03T16:15:00Z"
+  }
+]

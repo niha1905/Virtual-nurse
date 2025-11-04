@@ -1,0 +1,692 @@
+/* ============================================
+   MEDICATION & ACTIVITY STYLES
+   ============================================ */
+
+/* Medication Section */
+.medication-section {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.next-medication-card {
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1rem;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.next-medication-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+
+.medication-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.medication-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.medication-icon i {
+    width: 30px;
+    height: 30px;
+}
+
+.medication-details {
+    flex: 1;
+}
+
+.medication-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.medication-dosage {
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.medication-time {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.medication-time i {
+    width: 18px;
+    height: 18px;
+}
+
+.time-until {
+    margin-left: auto;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.medication-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.medication-actions .btn-primary,
+.medication-actions .btn-secondary {
+    flex: 1;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.medication-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 2rem;
+    color: var(--text-secondary);
+}
+
+.no-medication {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+}
+
+.no-medication i {
+    width: 48px;
+    height: 48px;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.medication-notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    z-index: 10000;
+    max-width: 350px;
+    animation: slideInRight 0.3s ease;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.notification-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--primary);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.notification-text strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.notification-text p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Activity Section */
+.activity-section {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.activity-card {
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.activity-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.activity-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--secondary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.activity-icon i {
+    width: 30px;
+    height: 30px;
+}
+
+.activity-info {
+    flex: 1;
+}
+
+.activity-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.activity-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.activity-value .unit {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-left: 0.25rem;
+}
+
+.activity-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.activity-trend i {
+    width: 16px;
+    height: 16px;
+}
+
+.activity-trend.positive {
+    color: var(--accent);
+}
+
+.activity-trend.negative {
+    color: var(--danger);
+}
+
+.activity-chart {
+    height: 300px;
+    margin-top: 1.5rem;
+}
+
+.summary-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--bg-secondary);
+    padding: 4px;
+    border-radius: var(--radius-md);
+}
+
+.toggle-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.toggle-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+/* Reports Section */
+.reports-section {
+    padding: 2rem;
+}
+
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.report-item {
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.report-item:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.report-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.report-date {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.report-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.report-action-btn {
+    padding: 6px 12px;
+    border: none;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.report-action-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Communication Section */
+.communication-section {
+    padding: 2rem;
+}
+
+.communication-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.patient-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.patient-selector label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.select-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.select-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.message-input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message-textarea {
+    min-height: 150px;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.3s ease;
+}
+
+.message-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.message-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.dictation-btn {
+    flex: 1;
+    padding: 12px 24px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.dictation-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.dictation-btn.recording {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: white;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.send-btn {
+    flex: 1;
+    padding: 12px 24px;
+    background: var(--primary);
+    border: none;
+    color: white;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.send-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.message-history {
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+}
+
+.message-item {
+    padding: 1rem;
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--primary);
+}
+
+.message-item.sent {
+    border-left-color: var(--accent);
+}
+
+.message-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.message-content {
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* Patient Management Styles */
+.patient-management-section {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.patients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.patient-item {
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.patient-item:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.patient-item-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.patient-item .patient-avatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.patient-item .patient-info {
+    flex: 1;
+}
+
+.patient-item .patient-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.patient-item .patient-email {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.patient-item .patient-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+}
+
+.patient-status.status-active {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--accent);
+}
+
+.patient-status.status-inactive {
+    background: rgba(107, 114, 128, 0.1);
+    color: var(--text-secondary);
+}
+
+.patient-details {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--bg-primary);
+    border-radius: var(--radius-sm);
+}
+
+.patient-details .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.patient-details .detail-item i {
+    width: 18px;
+    height: 18px;
+}
+
+.patient-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.patient-actions .action-btn {
+    flex: 1;
+    padding: 10px 16px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.patient-actions .action-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.patient-actions .action-btn.danger:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+}
+
+.patient-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.patient-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.patient-form .form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.patient-form .form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .activity-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .medication-actions {
+        flex-direction: column;
+    }
+
+    .message-actions {
+        flex-direction: column;
+    }
+
+    .patient-details {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .patient-actions {
+        flex-direction: column;
+    }
+}
+

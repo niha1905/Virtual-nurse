@@ -1,0 +1,20 @@
+﻿__pycache__/
+*.py[cod]
+*.log
+.env
+.venv/
+venv/
+.env.local
+node_modules/
+.DS_Store
+Thumbs.db
+# Data/sensitive tokens
+/data/*token*
+/data/*secret*
+/data/*.pickle
+*.pickle
+client_secret_*.json
+google_fit_token_*.pickle
+/models/*
+!models/**/*.ipynb
+!models/**/*.json

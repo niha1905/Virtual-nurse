@@ -1,0 +1,51 @@
+/* Detection Controls */
+.detection-controls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.detection-controls button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.detection-controls .btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.detection-controls .btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.detection-controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.detection-controls button.hidden {
+    display: none;
+}
+
+/* Detection Status */
+.detection-status .detection-text {
+    transition: all var(--transition-normal);
+}
+
+.detection-status:not(.monitoring) .pulse-indicator {
+    display: none;
+}

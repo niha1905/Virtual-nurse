@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caretaker Dashboard - Virtual Nurse AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/enhancements.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+    <script>
+        (function(){
+            try{
+                var raw = localStorage.getItem('user_session');
+                var sess = raw ? JSON.parse(raw) : null;
+                if (!sess || (sess.role && sess.role !== 'caretaker')) {
+                    window.location.href = 'login.html';
+                }
+            }catch(e){}
+        })();
+    </script>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <i data-lucide="sun" class="theme-icon"></i>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass-panel">
+        <div class="nav-container">
+            <div class="logo">
+                <i data-lucide="heart-pulse" class="logo-icon"></i>
+                <span class="logo-text">Virtual Nurse AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><span class="nav-link active">Caregiver Dashboard</span></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="header-info">
+                <h1 class="dashboard-title">Caretaker Dashboard</h1>
+                <p class="dashboard-subtitle">Monitor and respond to patient needs</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat-badge glass-panel">
+                    <i data-lucide="bell"></i>
+                    <span id="activeAlertsCount">0</span>
+                    <span class="stat-label">Active Alerts</span>
+                </div>
+                <div class="stat-badge glass-panel">
+                    <i data-lucide="users"></i>
+                    <span id="patientsCount">1</span>
+                    <span class="stat-label">Patients</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Notifications -->
+        <div class="alerts-section">
+            <h2 class="section-title">
+                <i data-lucide="alert-circle"></i>
+                Active Alerts
+            </h2>
+            <div class="alerts-container" id="alertsContainer">
+                <!-- Alerts will be dynamically inserted here -->
+                <div class="empty-state glass-panel">
+                    <i data-lucide="check-circle" class="empty-icon"></i>
+                    <p>No active alerts. All patients are doing well!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medicine Reminders -->
+        <div class="reminders-section glass-panel fade-in-up">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i data-lucide="pill"></i>
+                    Medicine Reminders
+                </h2>
+                <div class="section-actions">
+                    <label class="checkbox-label" title="Enable reminder sound">
+                        <input type="checkbox" id="reminderSoundToggle">
+                        <span>Sound</span>
+                    </label>
+                    <button class="add-btn" id="addReminderBtn" onclick="document.getElementById('reminderModal')?.classList.add('active')">
+                        <i data-lucide="plus"></i>
+                        Add Reminder
+                    </button>
+                </div>
+            </div>
+            <div class="reminders-list" id="remindersList">
+                <!-- Reminders will be dynamically inserted -->
+            </div>
+        </div>
+
+        <!-- Patient Overview -->
+        <div class="patient-overview">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i data-lucide="user"></i>
+                    Patient Overview
+                </h2>
+                <button class="add-btn" id="addPatientBtn">
+                    <i data-lucide="user-plus"></i>
+                    Add Patient
+                </button>
+            </div>
+            <div id="patientsList" class="patient-cards-grid"></div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="activity-section glass-panel fade-in-up">
+            <h2 class="section-title">
+                <i data-lucide="clock"></i>
+                Recent Activity
+            </h2>
+            <div class="activity-timeline" id="activityTimeline">
+                <!-- Activity items will be dynamically inserted -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Reminder Modal -->
+    <div class="modal" id="reminderModal">
+        <div class="modal-content glass-panel">
+            <button class="modal-close" id="closeReminderModal" title="Close" aria-label="Close modal">
+                <i data-lucide="x"></i>
+            </button>
+            <h2 class="modal-title">Add Medicine Reminder</h2>
+            <form class="reminder-form" id="reminderForm">
+                <div class="form-group">
+                    <label>Patient</label>
+                    <label for="reminderPatientSelect" class="sr-only">Select patient</label>
+                    <select id="reminderPatientSelect" name="patient_id" class="form-input" aria-label="Select patient">
+                        <option value="">Select patient...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Medicine Name</label>
+                    <input type="text" name="medicine" class="form-input" placeholder="e.g., Aspirin" required>
+                </div>
+                <div class="form-group">
+                    <label>Dosage</label>
+                    <input type="text" name="dosage" class="form-input" placeholder="e.g., 100mg">
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <label for="reminderTime" class="sr-only">Reminder time</label>
+                    <input type="time" id="reminderTime" name="time" class="form-input" aria-label="Reminder time" required>
+                </div>
+                <div class="form-group">
+                    <label>Frequency</label>
+                    <label for="reminderFrequency" class="sr-only">Reminder frequency</label>
+                    <select id="reminderFrequency" name="frequency" class="form-input" aria-label="Reminder frequency">
+                        <option>Once daily</option>
+                        <option>Twice daily</option>
+                        <option>Three times daily</option>
+                        <option>As needed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <label for="reminderStatus" class="sr-only">Reminder status</label>
+                    <select id="reminderStatus" name="status" class="form-input" aria-label="Reminder status">
+                        <option value="pending" selected>Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn pulse-glow">
+                    <i data-lucide="check"></i>
+                    Add Reminder
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Patient Modal -->
+    <div class="modal" id="addPatientModal">
+        <div class="modal-content glass-panel">
+            <button class="modal-close" id="closePatientModal" title="Close" aria-label="Close modal">
+                <i data-lucide="x"></i>
+            </button>
+            <h2 class="modal-title">Add New Patient</h2>
+            <form class="patient-form" id="addPatientForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="patientName" name="name" class="form-input" placeholder="e.g., John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="patientEmail" name="email" class="form-input" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" id="patientAge" name="age" class="form-input" placeholder="65" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="patientPhone" name="phone" class="form-input" placeholder="+1 234 567 8900">
+                </div>
+                <div class="form-group">
+                    <label>Medical Condition</label>
+                    <input type="text" id="patientCondition" name="condition" class="form-input" placeholder="e.g., Hypertension, Diabetes">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="patientAddress" name="address" class="form-input" rows="2" placeholder="Patient address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Emergency Contact</label>
+                    <input type="text" id="emergencyContact" name="emergency_contact" class="form-input" placeholder="Name and phone number">
+                </div>
+                <button type="submit" class="submit-btn pulse-glow">
+                    <i data-lucide="check"></i>
+                    Add Patient
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/gemini_api.js"></script>
+    <script src="js/wake_word.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/alerts.js"></script>
+    <script src="js/caretaker_voice.js"></script>
+    <script src="js/patient_management.js"></script>
+    <script>
+        (function ensureLucide(){
+            if (!window.lucide) {
+                var s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js';
+                s.defer = true;
+                s.onload = function(){
+                    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                        window.lucide.createIcons();
+                    }
+                };
+                document.head.appendChild(s);
+            }
+        })();
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+        }
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('.theme-icon');
+            icon.setAttribute('data-lucide', document.body.classList.contains('dark-mode') ? 'moon' : 'sun');
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        });
+
+        // Initialize Caretaker Dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCaretakerDashboard();
+            loadAlerts();
+            loadReminders();
+            loadActivityLog();
+            // Periodic refresh to keep page active
+            setInterval(loadAlerts, 15000);
+            setInterval(loadReminders, 60000);
+            setInterval(loadActivityLog, 60000);
+            // Ensure patients render
+            if (window.patientManagement && typeof window.patientManagement.loadPatients === 'function') {
+                window.patientManagement.loadPatients();
+            }
+        });
+
+        // Alerts loader (API-first with fallback)
+        async function loadAlerts() {
+            try {
+                const local = await fetch('data/alerts.json', { cache: 'no-store' });
+                if (local.ok) {
+                    const data = await local.json();
+                    const items = (data.alerts || data || []).map(a => ({
+                        id: a.id || Date.now(),
+                        type: a.type || 'help',
+                        patient: a.patient || a.patient_name || 'Patient',
+                        message: a.message || 'Alert',
+                        time: a.time || 'just now',
+                        priority: a.priority || 'high'
+                    }));
+                    if (items.length > 0) return displayAlerts(items);
+                }
+                const response = await fetch(API_ENDPOINTS.alerts, { ...FETCH_OPTIONS });
+                if (response.ok) {
+                    const data = await response.json();
+                    const items = (data.alerts || data || []).map(a => ({
+                        id: a.id || Date.now(),
+                        type: a.type || 'help',
+                        patient: a.patient || a.patient_name || 'Patient',
+                        message: a.message || 'Alert',
+                        time: a.time || 'just now',
+                        priority: a.priority || 'high'
+                    }));
+                    if (items.length > 0) return displayAlerts(items);
+                }
+            } catch (e) {
+                // ignore and use fallback
+            }
+            // Fallback sample
+            displayAlerts([
+                { id: 1, type: 'help', patient: 'John Doe', message: 'Patient requested assistance', time: '2 minutes ago', priority: 'high' }
+            ]);
+        }
+
+        function displayAlerts(alerts) {
+            const container = document.getElementById('alertsContainer');
+            container.innerHTML = '';
+
+            alerts.forEach((alert, index) => {
+                const alertCard = document.createElement('div');
+                alertCard.className = `alert-card glass-panel alert-${alert.priority} fade-in-up`;
+                alertCard.style.animationDelay = `${index * 0.1}s`;
+                alertCard.innerHTML = `
+                    <div class="alert-header">
+                        <i data-lucide="alert-triangle" class="alert-icon"></i>
+                        <div class="alert-info">
+                            <h3 class="alert-patient">${alert.patient}</h3>
+                            <p class="alert-message">${alert.message}</p>
+                        </div>
+                        <span class="alert-time">${alert.time}</span>
+                    </div>
+                    <div class="alert-actions">
+                        <button class="alert-action-btn acknowledge" onclick="acknowledgeAlert(${alert.id})">
+                            <i data-lucide="check"></i>
+                            Acknowledge
+                        </button>
+                        <button class="alert-action-btn respond" onclick="respondToAlert(${alert.id})">
+                            <i data-lucide="arrow-right"></i>
+                            Respond
+                        </button>
+                        <button class="alert-action-btn escalate" onclick="transferToDoctor(${alert.id})" title="Transfer to Doctor">
+                            <i data-lucide="stethoscope"></i>
+                            Transfer
+                        </button>
+                    </div>
+                `;
+                container.appendChild(alertCard);
+            });
+
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+
+        function displayReminders(reminders) {
+            const list = document.getElementById('remindersList');
+            if (!list) return;
+
+            clearReminderIntervals();
+            list.innerHTML = '';
+
+            if (!reminders || reminders.length === 0) {
+                list.innerHTML = '<div class="empty-state"><p>No reminders yet.</p></div>';
+                return;
+            }
+
+            reminders.forEach((reminder, index) => {
+                const item = document.createElement('div');
+                item.className = `reminder-item ${reminder.status || (reminder.taken ? 'completed' : 'pending')} fade-in-up`;
+                item.style.animationDelay = `${index * 0.05}s`;
+
+                const timeHtml = `
+                    <div class="reminder-time">
+                        <i data-lucide="clock"></i>
+                        <span class="time-text">${reminder.time || '--:--'}</span>
+                        <span class="countdown" id="cd-${reminder.id}">--</span>
+                    </div>`;
+
+                item.innerHTML = `
+                    <div class="reminder-icon"><i data-lucide="pill"></i></div>
+                    <div class="reminder-details">
+                        <h4 class="reminder-medicine">${reminder.medicine || 'Medicine'}</h4>
+                        <p class="reminder-dosage">${(reminder.dosage || '').toString()}</p>
+                        ${timeHtml}
+                    </div>
+                    <div class="reminder-actions">
+                        <span class="reminder-status">${(reminder.status || (reminder.taken ? 'completed' : 'pending')).toUpperCase()}</span>
+                        <button class="reminder-check ${reminder.taken || reminder.status==='completed' ? 'checked' : ''}" onclick="toggleReminder(${reminder.id})">
+                            <i data-lucide="check"></i>
+                        </button>
+                    </div>`;
+
+                list.appendChild(item);
+
+                // Countdown timer per reminder
+                const cdEl = item.querySelector(`#cd-${reminder.id}`);
+                const due = parseTimeToToday((reminder.time || '').replace(/\s*(AM|PM)$/i,''));
+                const update = () => {
+                    const now = new Date();
+                    let target = new Date(due);
+                    // If time already passed today, set to tomorrow same time
+                    if (target.getTime() - now.getTime() < -1000) {
+                        target.setDate(target.getDate() + 1);
+                    }
+                    const ms = target - now;
+                    if (cdEl) cdEl.textContent = formatCountdown(ms);
+                    if (ms <= 1000 && (reminder.status || (reminder.taken ? 'completed' : 'pending')) === 'pending') {
+                        item.classList.add('due');
+                        playBeep();
+                    }
+                };
+                update();
+                const intervalId = setInterval(update, 1000);
+                reminderIntervals.set(reminder.id, intervalId);
+            });
+
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+
+        async function loadReminders() {
+            try {
+                // Merge order: localStorage -> data/reminders.json -> API
+                let merged = [];
+                try {
+                    const localLSRaw = localStorage.getItem('reminders_local');
+                    if (localLSRaw) {
+                        merged = merged.concat(JSON.parse(localLSRaw));
+                    }
+                } catch (e) {}
+                const local = await fetch('data/reminders.json', { cache: 'no-store' });
+                if (local.ok) {
+                    const data = await local.json();
+                    merged = merged.concat((data.reminders || data || []));
+                }
+                const response = await fetch(API_ENDPOINTS.reminders, FETCH_OPTIONS);
+                if (response.ok) {
+                    const data = await response.json();
+                    merged = merged.concat((data || []));
+                }
+                const byId = new Map();
+                merged.forEach(r => { if (r && (r.id!==undefined && r.id!==null)) byId.set(String(r.id), r); });
+                const normalized = Array.from(byId.values()).map(r => ({
+                    id: r.id,
+                    medicine: r.medicine,
+                    dosage: r.dosage || '',
+                    time: r.time,
+                    status: r.status || (r.taken ? 'completed' : 'pending'),
+                    taken: !!r.taken
+                }));
+                displayReminders(normalized);
+            } catch (error) {
+                console.error('Error loading reminders:', error);
+            }
+        }
+        // Expose robust loader so later definitions can delegate
+        window.__robustRemindersLoader = loadReminders;
+
+        function loadActivityLog() {
+            const activities = [
+                { type: 'reminder', message: 'Medicine reminder sent to patient', time: '10 minutes ago' },
+                { type: 'vital', message: 'Heart rate checked - Normal (72 BPM)', time: '25 minutes ago' },
+                { type: 'alert', message: 'Fall detection alert resolved', time: '1 hour ago' },
+                { type: 'call', message: 'Video call completed with patient', time: '2 hours ago' }
+            ];
+
+            const timeline = document.getElementById('activityTimeline');
+            timeline.innerHTML = '';
+
+            activities.forEach((activity, index) => {
+                const item = document.createElement('div');
+                item.className = `activity-item fade-in-up`;
+                item.style.animationDelay = `${index * 0.1}s`;
+                item.innerHTML = `
+                    <div class="activity-icon ${activity.type}">
+                        <i data-lucide="${getActivityIcon(activity.type)}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-message">${activity.message}</p>
+                        <span class="activity-time">${activity.time}</span>
+                    </div>
+                `;
+                timeline.appendChild(item);
+            });
+
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+
+        function getActivityIcon(type) {
+            const icons = {
+                reminder: 'bell',
+                vital: 'activity',
+                alert: 'alert-triangle',
+                call: 'phone'
+            };
+            return icons[type] || 'circle';
+        }
+
+        // Modal handlers
+        (function setupReminderModal(){
+            const addReminderBtn = document.getElementById('addReminderBtn');
+            const reminderModal = document.getElementById('reminderModal');
+            const closeReminderModal = document.getElementById('closeReminderModal');
+            if (addReminderBtn && reminderModal) {
+                addReminderBtn.addEventListener('click', () => {
+                    reminderModal.classList.add('active');
+                });
+            } else {
+                document.addEventListener('click', (e) => {
+                    if (e.target && e.target.id === 'addReminderBtn') {
+                        document.getElementById('reminderModal')?.classList.add('active');
+                    }
+                });
+            }
+            if (closeReminderModal && reminderModal) {
+                closeReminderModal.addEventListener('click', () => {
+                    reminderModal.classList.remove('active');
+                });
+            }
+        })();
+
+        // Alert and Reminder Functions
+        async function acknowledgeAlert(id) {
+            try {
+                const response = await fetch(API_ENDPOINTS.alertsAcknowledge, {
+                    method: 'POST',
+                    ...FETCH_OPTIONS,
+                    body: JSON.stringify({ alert_id: id })
+                });
+                
+                if (response.ok) {
+                    loadAlerts();
+                }
+            } catch (error) {
+                console.error('Error acknowledging alert:', error);
+            }
+        }
+
+        function respondToAlert(id) {
+            if (window.caregiverVoice) {
+                window.caregiverVoice.openVoiceAssistant();
+            } else if (window.voiceAssistant) {
+                window.voiceAssistant.openModal();
+            }
+        }
+
+        async function transferToDoctor(id) {
+            try {
+                const response = await fetch(API_ENDPOINTS.alertsEscalate, {
+                    method: 'POST',
+                    ...FETCH_OPTIONS,
+                    body: JSON.stringify({ alert_id: id, target: 'doctor' })
+                });
+                if (response.ok) {
+                    loadAlerts();
+                }
+            } catch (error) {
+                console.error('Error transferring alert:', error);
+            }
+        }
+
+        async function toggleReminder(id) {
+            try {
+                const response = await fetch(API_ENDPOINTS.remindersTaken, {
+                    method: 'POST',
+                    ...FETCH_OPTIONS,
+                    body: JSON.stringify({ reminder_id: id })
+                });
+                
+                if (response.ok) {
+                    loadReminders();
+                    return;
+                }
+            } catch (error) {
+                console.error('Error toggling reminder:', error);
+            }
+            // Local fallback: update reminders_local
+            try {
+                const raw = localStorage.getItem('reminders_local');
+                if (raw) {
+                    const arr = JSON.parse(raw);
+                    const idx = arr.findIndex(r => String(r.id) === String(id));
+                    if (idx >= 0) {
+                        const curr = arr[idx];
+                        const newStatus = (curr.status || (curr.taken?'completed':'pending')) === 'completed' ? 'pending' : 'completed';
+                        arr[idx] = { ...curr, status: newStatus, taken: newStatus==='completed' };
+                        localStorage.setItem('reminders_local', JSON.stringify(arr));
+                        loadReminders();
+                        return;
+                    }
+                }
+            } catch (e) {}
+        }
+        
+        const reminderIntervals = new Map();
+        let reminderSoundEnabled = false;
+        let reminderAudioEl = null;
+        const reminderSoundToggle = document.getElementById('reminderSoundToggle');
+        if (reminderSoundToggle) {
+            reminderSoundToggle.addEventListener('change', () => {
+                reminderSoundEnabled = reminderSoundToggle.checked;
+                if (reminderSoundEnabled) {
+                    primeAudio();
+                }
+            });
+        }
+
+        function primeAudio() {
+            try {
+                if (!reminderAudioEl) {
+                    reminderAudioEl = document.createElement('audio');
+                    // A very short beep tone (1000 Hz, ~150ms) as base64 WAV
+                    reminderAudioEl.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAwGZmZmYAAACAgICAgP//AAAA';
+                    reminderAudioEl.preload = 'auto';
+                    document.body.appendChild(reminderAudioEl);
+                }
+                // Attempt a silent play to unlock audio
+                reminderAudioEl.volume = 0.0001;
+                reminderAudioEl.play().then(() => {
+                    reminderAudioEl.pause();
+                    reminderAudioEl.currentTime = 0;
+                    reminderAudioEl.volume = 1.0;
+                }).catch(() => {});
+            } catch (e) { }
+        }
+
+        function clearReminderIntervals() {
+            reminderIntervals.forEach((intervalId) => clearInterval(intervalId));
+            reminderIntervals.clear();
+        }
+
+        function parseTimeToToday(timeStr) {
+            if (!timeStr) timeStr = '00:00';
+            // Normalize AM/PM if present
+            let t = timeStr.trim();
+            const ampmMatch = t.match(/(am|pm)$/i);
+            let h = 0, m = 0;
+            if (ampmMatch) {
+                const ampm = ampmMatch[1].toLowerCase();
+                t = t.replace(/\s*(am|pm)$/i, '');
+                const parts = t.split(':');
+                h = parseInt(parts[0] || '0', 10);
+                m = parseInt(parts[1] || '0', 10);
+                if (ampm === 'pm' && h < 12) h += 12;
+                if (ampm === 'am' && h === 12) h = 0;
+            } else {
+                const parts = t.split(':');
+                h = parseInt(parts[0] || '0', 10);
+                m = parseInt(parts[1] || '0', 10);
+            }
+            const now = new Date();
+            const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+            return d;
+        }
+
+        function formatCountdown(ms) {
+            if (ms <= 0) return 'Now';
+            const totalSec = Math.floor(ms / 1000);
+            const h = Math.floor(totalSec / 3600);
+            const m = Math.floor((totalSec % 3600) / 60);
+            const s = totalSec % 60;
+            if (h > 0) return `${h}h ${String(m).padStart(2,'0')}m`;
+            if (m > 0) return `${m}m ${String(s).padStart(2,'0')}s`;
+            return `${s}s`;
+        }
+
+        function playBeep() {
+            if (!reminderSoundEnabled) return;
+            if (!reminderAudioEl) primeAudio();
+            try {
+                reminderAudioEl.currentTime = 0;
+                reminderAudioEl.play().catch(() => {});
+            } catch (e) { }
+        }
+
+        function displayReminders(reminders) {
+            const list = document.getElementById('remindersList');
+            if (!list) return;
+
+            clearReminderIntervals();
+            list.innerHTML = '';
+
+            if (!reminders || reminders.length === 0) {
+                list.innerHTML = '<div class="empty-state"><p>No reminders yet.</p></div>';
+                return;
+            }
+
+            reminders.forEach((reminder, index) => {
+                const item = document.createElement('div');
+                item.className = `reminder-item ${reminder.status || (reminder.taken ? 'completed' : 'pending')} fade-in-up`;
+                item.style.animationDelay = `${index * 0.05}s`;
+
+                const timeHtml = `
+                    <div class="reminder-time">
+                        <i data-lucide="clock"></i>
+                        <span class="time-text">${reminder.time || '--:--'}</span>
+                        <span class="countdown" id="cd-${reminder.id}">--</span>
+                    </div>`;
+
+                item.innerHTML = `
+                    <div class="reminder-icon"><i data-lucide="pill"></i></div>
+                    <div class="reminder-details">
+                        <h4 class="reminder-medicine">${reminder.medicine || 'Medicine'}</h4>
+                        <p class="reminder-dosage">${(reminder.dosage || '').toString()}</p>
+                        ${timeHtml}
+                    </div>
+                    <div class="reminder-actions">
+                        <span class="reminder-status">${(reminder.status || (reminder.taken ? 'completed' : 'pending')).toUpperCase()}</span>
+                        <button class="reminder-check ${reminder.taken || reminder.status==='completed' ? 'checked' : ''}" onclick="toggleReminder(${reminder.id})">
+                            <i data-lucide="check"></i>
+                        </button>
+                    </div>`;
+
+                list.appendChild(item);
+
+                // Countdown timer per reminder
+                const cdEl = item.querySelector(`#cd-${reminder.id}`);
+                const due = parseTimeToToday(reminder.time || '');
+                const update = () => {
+                    const now = new Date();
+                    let target = new Date(due);
+                    // If time already passed today, set to tomorrow same time
+                    if (target.getTime() - now.getTime() < -1000) {
+                        target.setDate(target.getDate() + 1);
+                    }
+                    const ms = target - now;
+                    if (cdEl) cdEl.textContent = formatCountdown(ms);
+                    const statusVal = (reminder.status || (reminder.taken ? 'completed' : 'pending')).toString().toLowerCase();
+                    if (ms <= 1000 && statusVal === 'pending') {
+                        item.classList.add('due');
+                        playBeep();
+                    }
+                };
+                update();
+                const intervalId = setInterval(update, 1000);
+                reminderIntervals.set(reminder.id, intervalId);
+            });
+
+            lucide.createIcons();
+        }
+
+        async function loadReminders() {
+            // Delegate to the robust loader if available
+            if (typeof window.__robustRemindersLoader === 'function') {
+                return window.__robustRemindersLoader();
+            }
+            // Fallback simple loader with sample data
+            try {
+                const response = await fetch(API_ENDPOINTS.reminders, FETCH_OPTIONS);
+                if (response.ok) {
+                    const data = await response.json();
+                    const normalized = (data.reminders || data || []).map(r => ({
+                        id: r.id,
+                        medicine: r.medicine,
+                        dosage: r.dosage || '',
+                        time: r.time,
+                        status: r.status || (r.taken ? 'completed' : 'pending'),
+                        taken: !!r.taken
+                    }));
+                    if (normalized.length) return displayReminders(normalized);
+                }
+            } catch (error) { /* ignore and use sample */ }
+            // Sample reminders
+            displayReminders([
+                { id: 101, medicine: 'Aspirin', dosage: '100mg', time: '08:00', status: 'pending', taken: false },
+                { id: 102, medicine: 'Metformin', dosage: '500mg', time: '12:00', status: 'pending', taken: false }
+            ]);
+        }
+        
+        // Reminder form handler
+        const reminderForm = document.getElementById('reminderForm');
+        if (reminderForm) {
+            reminderForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const reminderData = {
+                    patient_id: formData.get('patient_id') || document.getElementById('reminderPatientSelect')?.value || '1',
+                    medicine: formData.get('medicine') || e.target.querySelector('input[name="medicine"]')?.value,
+                    dosage: formData.get('dosage') || e.target.querySelector('input[name="dosage"]')?.value,
+                    time: formData.get('time') || e.target.querySelector('input[type="time"]')?.value,
+                    frequency: formData.get('frequency') || e.target.querySelector('select[name="frequency"]')?.value || 'daily',
+                    status: formData.get('status') || 'pending'
+                };
+                
+                try {
+                    const response = await fetch(API_ENDPOINTS.remindersCreate, {
+                        method: 'POST',
+                        ...FETCH_OPTIONS,
+                        body: JSON.stringify(reminderData)
+                    });
+                    
+                    if (response.ok) {
+                        await loadReminders();
+                        document.getElementById('reminderModal')?.classList.remove('active');
+                        e.target.reset();
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error creating reminder:', error);
+                }
+                // Local fallback create
+                try {
+                    const raw = localStorage.getItem('reminders_local');
+                    const arr = raw ? JSON.parse(raw) : [];
+                    const id = Date.now();
+                    arr.push({ id, ...reminderData });
+                    localStorage.setItem('reminders_local', JSON.stringify(arr));
+                    await loadReminders();
+                    document.getElementById('reminderModal')?.classList.remove('active');
+                    e.target.reset();
+                } catch (e2) { }
+            });
+        }
+
+        function initializeCaretakerDashboard() {
+            console.log('Caretaker dashboard initialized');
+            // Populate patient select in reminder form from local data
+            (async function populateReminderPatients(){
+                try {
+                    const select = document.getElementById('reminderPatientSelect');
+                    if (!select) return;
+                    let patients = [];
+                    const local = await fetch('data/patients.json', { cache: 'no-store' });
+                    if (local.ok) {
+                        const data = await local.json();
+                        // patients.json could be an object map or array
+                        if (Array.isArray(data)) patients = data;
+                        else patients = Object.values(data);
+                    }
+                    if (patients.length === 0 && window.patientManagement) {
+                        patients = window.patientManagement.patients || [];
+                    }
+                    select.innerHTML = '<option value="">Select patient...</option>' +
+                        patients.map(p => `<option value="${p.id}">${p.name || ('Patient ' + p.id)}</option>`).join('');
+                } catch (e) {}
+            })();
+        }
+    </script>
+    
+    <!-- Enhancement Scripts -->
+    <script src="js/enhancements.js"></script>
+    <!-- Footer -->
+    <footer class="home-footer">
+        <div class="site-footer">
+            <div class="brand">
+                <strong>Virtual Nurse AI</strong>
+                <div class="small-note">Caring for your loved ones</div>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="patient.html">Patient</a>
+                <a href="reminders.html">Reminders</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="small-note">© <span id="year">2025</span> Virtual Nurse AI</div>
+        </div>
+    </footer>
+    <script>
+        (function(){ const y = new Date().getFullYear(); const el = document.getElementById('year'); if (el) el.textContent = y; })();
+    </script>
+</body>
+</html>

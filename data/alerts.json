@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "patientId": "1",
+    "type": "voice",
+    "message": "User requested help",
+    "priority": "medium",
+    "timestamp": "2025-11-04T18:21:05.836911",
+    "acknowledged": false
+  },
+  {
+    "id": 2,
+    "patientId": "1",
+    "type": "emergency",
+    "source": "manual",
+    "severity": "high",
+    "message": "Emergency button pressed",
+    "timestamp": "2025-11-04T18:32:50.791060",
+    "acknowledged": false,
+    "requiresConfirmation": true,
+    "confirmed": false
+  },
+  {
+    "id": 3,
+    "patientId": "1",
+    "type": "emergency",
+    "source": "manual",
+    "severity": "high",
+    "message": "Emergency button pressed",
+    "timestamp": "2025-11-04T18:40:26.596157",
+    "acknowledged": false,
+    "requiresConfirmation": true,
+    "confirmed": false
+  },
+  {
+    "id": 4,
+    "patientId": "1",
+    "type": "emergency",
+    "source": "manual",
+    "severity": "high",
+    "message": "Emergency button pressed",
+    "timestamp": "2025-11-04T18:47:37.986220",
+    "acknowledged": false,
+    "requiresConfirmation": true,
+    "confirmed": false
+  }
+]

@@ -1,0 +1,83 @@
+/* Voice Assistant Styles */
+.voice-assistant {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.voice-controls {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.voice-button {
+    padding: 15px 30px;
+    border-radius: 25px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.voice-button:hover {
+    background-color: #0056b3;
+}
+
+.voice-button.listening {
+    background-color: #dc3545;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.transcript-container,
+.response-container,
+.mood-container {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.mood-container {
+    background-color: #e9ecef;
+}
+
+.mood-concerns {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fff3cd;
+    border-radius: 5px;
+}
+
+.error-container {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .voice-assistant {
+        padding: 10px;
+    }
+    
+    .voice-button {
+        padding: 12px 24px;
+        font-size: 1em;
+    }
+}

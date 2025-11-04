@@ -1,0 +1,59 @@
+{
+  "1": {
+    "id": "1",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "age": 65,
+    "phone": "+1 234 567 8900",
+    "condition": "Hypertension",
+    "address": "123 Main St, Anytown, USA",
+    "emergency_contact": "Jane Doe (Wife) - +1 234 567 8901",
+    "doctor_id": "D1",
+    "vitals": {
+      "heartRate": 72,
+      "temperature": 98.6,
+      "oxygen": 98,
+      "systolic": 120,
+      "diastolic": 80
+    },
+    "created_at": "2025-10-01T10:00:00Z"
+  },
+  "2": {
+    "id": "2",
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "age": 58,
+    "phone": "+1 234 567 8902",
+    "condition": "Diabetes Type 2",
+    "address": "456 Oak Ave, Anytown, USA",
+    "emergency_contact": "John Smith (Son) - +1 234 567 8903",
+    "doctor_id": "D1",
+    "vitals": {
+      "heartRate": 76,
+      "temperature": 98.8,
+      "oxygen": 97,
+      "systolic": 135,
+      "diastolic": 85
+    },
+    "created_at": "2025-10-15T14:30:00Z"
+  },
+  "3": {
+    "id": "3",
+    "name": "Sarah Johnson",
+    "email": "sarah@example.com",
+    "age": 72,
+    "phone": "+1 234 567 8904",
+    "condition": "Arthritis",
+    "address": "789 Pine Rd, Anytown, USA",
+    "emergency_contact": "Michael Johnson (Son) - +1 234 567 8905",
+    "doctor_id": "D1",
+    "vitals": {
+      "heartRate": 82,
+      "temperature": 99.1,
+      "oxygen": 96,
+      "systolic": 142,
+      "diastolic": 88
+    },
+    "created_at": "2025-11-01T09:15:00Z"
+  }
+}
