@@ -1,5 +1,4 @@
 
-````markdown
 # 🩺 Virtual Nurse AI  
 **An Intelligent, Voice-Enabled Healthcare Assistant**
 
@@ -168,10 +167,3 @@ Special thanks to:
 * Open datasets: **KFall**, **COUGHVID**, **Coswara**
 * Research from **Nature Medicine**, **npj Digital Medicine**, and **The Lancet Digital Health**
 
-
-```
-
----
-
-Would you like me to **add a section for GitHub Actions (auto model retraining + deployment badges)** or **generate the matching `requirements.txt` and folder structure diagram** next?
-```
